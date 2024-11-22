@@ -190,7 +190,15 @@
  RD_Array<T>::RD_Array( const RD_Array<T> & otherArray )
  {
  
-         // PUT YOUR CODE HERE
+        currentSize = otherArray.currentSize;
+        currentCapacity = otherArray.currentCapacity;
+    
+        contents = new T[currentCapacity];
+    
+        for ( unsigned long i = 0; i < currentSize; i++ )
+        {
+            contents[i] = otherArray.contents[i];
+        }
  
  
  } // END copy constructor for class RD_Array
