@@ -276,7 +276,20 @@
  void RD_Array<T>::insert(unsigned long ndx, const T& infoToAdd)
  {
  
-         // PUT YOUR CODE HERE
+    if (ndx > currentSize) {
+        throw out_of_range("Index out of range");
+    }
+
+    if (currentSize >= currentCapacity) {
+        increaseCapacity();
+    }
+
+    for (unsigned long i = currentSize; i > ndx; i--) {
+        contents[i] = contents[i - 1];
+    }
+
+    contents[ndx] = infoToAdd;
+    currentSize++;
  
  } // END insert method class RD_Array
  
