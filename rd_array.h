@@ -128,11 +128,22 @@
  
  template <typename T>
  void RD_Array<T>::increaseCapacity()
- {
-     
-         // PUT YOUR CODE HERE 
- 
- } // END increaseCapacity method of RD_Array class
+{
+    if (currentCapacity == 0) {
+        currentCapacity = 1;
+    } else {
+        currentCapacity *= 2;
+    }
+
+    T* newContents = new T[currentCapacity];
+    
+    for (unsigned long i = 0; i < currentSize; i++) {
+        newContents[i] = contents[i];
+    }
+    
+    delete[] contents;
+    contents = newContents;
+}
  
  
  
