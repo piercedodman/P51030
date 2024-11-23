@@ -385,7 +385,7 @@ currentSize--;
  void RD_Array<T>::pop_front()
  {
  
-         // PUT YOUR CODE HERE
+        remove(0);
  
  
  } // END pop_front method class RD_Array
