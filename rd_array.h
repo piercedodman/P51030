@@ -104,15 +104,19 @@
   *              non-member function overloaded operator<<                   *
   ****************************************************************************/
  
- template <typename T>
- std::ostream& operator<<(std::ostream& os, const RD_Array<T> &rhsObj)
- {
-     
-         // PUT YOUR CODE HERE
- 
-     return os;
- 
- } //END overloaded stream insertion operator for RD_Array<T> class
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const RD_Array<T> &rhsObj)
+{
+    os << "[";
+    for (unsigned long i = 0; i < rhsObj.size(); i++) {
+        os << rhsObj.at(i);
+        if (i < rhsObj.size() - 1) {
+            os << ", ";
+        }
+    }
+    os << "]";
+    return os;
+}//END overloaded stream insertion operator for RD_Array<T> class
  
  
  
