@@ -329,8 +329,7 @@ currentSize--;
  void RD_Array<T>::push_back( const T& infoToAdd )
  {
  
-         // PUT YOUR CODE HERE
- 
+    insert(currentSize, infoToAdd);
  
  } // END push_back method class RD_Array
  
