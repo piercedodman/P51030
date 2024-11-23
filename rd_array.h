@@ -400,9 +400,7 @@ currentSize--;
  T& RD_Array<T>::front() const
  {
  
-     // PUT YOUR CODE HERE 
-         
-         return T();  // PLACE HOLDER RETURN, REPLACE WITH YOUR CODE 
+    return at(0);
  
  } // END front method class RD_Array
  
