@@ -303,7 +303,19 @@
  void RD_Array<T>::remove( unsigned long ndx )
  {
  
-         // PUT YOUR CODE HERE
+if (empty()) {
+    throw no_such_object("Array is empty");
+}
+
+if (ndx >= currentSize) {
+    throw out_of_range("Index out of range");
+}
+
+for (unsigned long i = ndx; i < currentSize - 1; i++) {
+    contents[i] = contents[i + 1];
+}
+
+currentSize--;
  
  } // END remove method class RD_Array
  
