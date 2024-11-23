@@ -411,12 +411,38 @@ currentSize--;
   ****************************************************************************/
  
  template <typename T>
- void RD_Array<T>::resize( const unsigned long newSize, const T& value )
- {
-         
-     // PUT YOUR CODE HERE
-         
- } // END resize method class RD_Array
+ void RD_Array<T>::resize(const unsigned long newSize, const T& value)
+{
+    if (newSize <= capacity) {
+        // Fill new elements if expanding
+        if (newSize > currentSize) {
+            for (unsigned long i = currentSize; i < newSize; i++) {
+                contents[i] = value;
+            }
+        }
+        currentSize = newSize;
+    }
+    else {
+        // Need to increase capacity
+        T* newContents = new T[newSize];
+        
+        // Copy existing elements
+        for (unsigned long i = 0; i < currentSize; i++) {
+            newContents[i] = contents[i];
+        }
+        
+        // Fill new elements
+        for (unsigned long i = currentSize; i < newSize; i++) {
+            newContents[i] = value;
+        }
+        
+        // Update pointers and sizes
+        delete[] contents;
+        contents = newContents;
+        capacity = newSize;
+        currentSize = newSize;
+    }
+}
  
  
  
