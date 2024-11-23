@@ -343,7 +343,7 @@ currentSize--;
  void RD_Array<T>::pop_back()
  {
  
-         // PUT YOUR CODE HERE
+        remove(currentSize - 1);
  
  } // END pop_back method class RD_Array
  
