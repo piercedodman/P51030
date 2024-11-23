@@ -357,9 +357,7 @@ currentSize--;
  T& RD_Array<T>::back() const
  {
  
-     // PUT YOUR CODE HERE 
-         
-         return T();  // PLACE HOLDER RETURN, REPLACE WITH YOUR CODE 
+    return at(currentSize - 1);
  
  } // END back method class RD_Array
  
