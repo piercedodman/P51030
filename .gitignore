@@ -25,6 +25,7 @@ __pycache__/
 
 # Log files
 *.log
+*.zip
 npm-debug.log*
 
 # Environment files
