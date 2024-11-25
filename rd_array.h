@@ -417,7 +417,7 @@ currentSize--;
  template <typename T>
  void RD_Array<T>::resize(const unsigned long newSize, const T& value)
 {
-    if (newSize <= capacity) {
+    if (newSize <= currentCapacity) {
         // Fill new elements if expanding
         if (newSize > currentSize) {
             for (unsigned long i = currentSize; i < newSize; i++) {
@@ -443,7 +443,7 @@ currentSize--;
         // Update pointers and sizes
         delete[] contents;
         contents = newContents;
-        capacity = newSize;
+        currentCapacity = newSize;
         currentSize = newSize;
     }
 }
