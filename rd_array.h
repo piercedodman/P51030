@@ -402,13 +402,15 @@ T& RD_Array<T>::back() const
   *                             front method                                 *
   ****************************************************************************/
  
- template <typename T>
- T& RD_Array<T>::front() const
- {
- 
+template <typename T>
+T& RD_Array<T>::front() const
+{
+    if (empty()) {
+        throw no_such_object("Array is empty");
+    }
     return at(0);
- 
- } // END front method class RD_Array
+
+} // END front method class RD_Array
  
  
  
