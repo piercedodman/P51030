@@ -357,13 +357,15 @@ currentSize--;
   *                             back method                                  *
   ****************************************************************************/
  
- template <typename T>
- T& RD_Array<T>::back() const
- {
- 
+template <typename T>
+T& RD_Array<T>::back() const
+{
+    if (empty()) {
+        throw no_such_object("Array is empty");
+    }
     return at(currentSize - 1);
- 
- } // END back method class RD_Array
+
+} // END back method class RD_Array
  
  
  
