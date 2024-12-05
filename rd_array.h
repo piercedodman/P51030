@@ -104,15 +104,19 @@
   *              non-member function overloaded operator<<                   *
   ****************************************************************************/
  
- template <typename T>
- std::ostream& operator<<(std::ostream& os, const RD_Array<T> &rhsObj)
- {
-     
-         // PUT YOUR CODE HERE
- 
-     return os;
- 
- } //END overloaded stream insertion operator for RD_Array<T> class
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const RD_Array<T> &rhsObj)
+{
+    os << "[";
+    for (unsigned long i = 0; i < rhsObj.size(); i++) {
+        os << rhsObj.at(i);
+        if (i < rhsObj.size() - 1) {
+            os << ", ";
+        }
+    }
+    os << "]";
+    return os;
+}//END overloaded stream insertion operator for RD_Array<T> class
  
  
  
@@ -128,11 +132,22 @@
  
  template <typename T>
  void RD_Array<T>::increaseCapacity()
- {
-     
-         // PUT YOUR CODE HERE 
- 
- } // END increaseCapacity method of RD_Array class
+{
+    if (currentCapacity == 0) {
+        currentCapacity = 1;
+    } else {
+        currentCapacity *= 2;
+    }
+
+    T* newContents = new T[currentCapacity];
+    
+    for (unsigned long i = 0; i < currentSize; i++) {
+        newContents[i] = contents[i];
+    }
+    
+    delete[] contents;
+    contents = newContents;
+}
  
  
  
@@ -179,7 +194,15 @@
  RD_Array<T>::RD_Array( const RD_Array<T> & otherArray )
  {
  
-         // PUT YOUR CODE HERE
+        currentSize = otherArray.currentSize;
+        currentCapacity = otherArray.currentCapacity;
+    
+        contents = new T[currentCapacity];
+    
+        for ( unsigned long i = 0; i < currentSize; i++ )
+        {
+            contents[i] = otherArray.contents[i];
+        }
  
  
  } // END copy constructor for class RD_Array
@@ -257,7 +280,20 @@
  void RD_Array<T>::insert(unsigned long ndx, const T& infoToAdd)
  {
  
-         // PUT YOUR CODE HERE
+    if (ndx > currentSize) {
+        throw out_of_range("Index out of range");
+    }
+
+    if (currentSize >= currentCapacity) {
+        increaseCapacity();
+    }
+
+    for (unsigned long i = currentSize; i > ndx; i--) {
+        contents[i] = contents[i - 1];
+    }
+
+    contents[ndx] = infoToAdd;
+    currentSize++;
  
  } // END insert method class RD_Array
  
@@ -271,7 +307,19 @@
  void RD_Array<T>::remove( unsigned long ndx )
  {
  
-         // PUT YOUR CODE HERE
+if (empty()) {
+    throw no_such_object("Array is empty");
+}
+
+if (ndx >= currentSize) {
+    throw out_of_range("Index out of range");
+}
+
+for (unsigned long i = ndx; i < currentSize - 1; i++) {
+    contents[i] = contents[i + 1];
+}
+
+currentSize--;
  
  } // END remove method class RD_Array
  
@@ -285,8 +333,7 @@
  void RD_Array<T>::push_back( const T& infoToAdd )
  {
  
-         // PUT YOUR CODE HERE
- 
+    insert(currentSize, infoToAdd);
  
  } // END push_back method class RD_Array
  
@@ -300,7 +347,7 @@
  void RD_Array<T>::pop_back()
  {
  
-         // PUT YOUR CODE HERE
+        remove(currentSize - 1);
  
  } // END pop_back method class RD_Array
  
@@ -310,15 +357,15 @@
   *                             back method                                  *
   ****************************************************************************/
  
- template <typename T>
- T& RD_Array<T>::back() const
- {
- 
-     // PUT YOUR CODE HERE 
-         
-         return T();  // PLACE HOLDER RETURN, REPLACE WITH YOUR CODE 
- 
- } // END back method class RD_Array
+template <typename T>
+T& RD_Array<T>::back() const
+{
+    if (empty()) {
+        throw no_such_object("Array is empty");
+    }
+    return at(currentSize - 1);
+
+} // END back method class RD_Array
  
  
  
@@ -330,7 +377,7 @@
  void RD_Array<T>::push_front( const T& infoToAdd )
  {
  
-         // PUT YOUR CODE HERE
+    insert(0, infoToAdd);
  
  } // END push_front method class RD_Array
  
@@ -344,7 +391,7 @@
  void RD_Array<T>::pop_front()
  {
  
-         // PUT YOUR CODE HERE
+        remove(0);
  
  
  } // END pop_front method class RD_Array
@@ -355,15 +402,15 @@
   *                             front method                                 *
   ****************************************************************************/
  
- template <typename T>
- T& RD_Array<T>::front() const
- {
- 
-     // PUT YOUR CODE HERE 
-         
-         return T();  // PLACE HOLDER RETURN, REPLACE WITH YOUR CODE 
- 
- } // END front method class RD_Array
+template <typename T>
+T& RD_Array<T>::front() const
+{
+    if (empty()) {
+        throw no_such_object("Array is empty");
+    }
+    return at(0);
+
+} // END front method class RD_Array
  
  
  
@@ -372,12 +419,38 @@
   ****************************************************************************/
  
  template <typename T>
- void RD_Array<T>::resize( const unsigned long newSize, const T& value )
- {
-         
-     // PUT YOUR CODE HERE
-         
- } // END resize method class RD_Array
+ void RD_Array<T>::resize(const unsigned long newSize, const T& value)
+{
+    if (newSize <= currentCapacity) {
+        // Fill new elements if expanding
+        if (newSize > currentSize) {
+            for (unsigned long i = currentSize; i < newSize; i++) {
+                contents[i] = value;
+            }
+        }
+        currentSize = newSize;
+    }
+    else {
+        // Need to increase capacity
+        T* newContents = new T[newSize];
+        
+        // Copy existing elements
+        for (unsigned long i = 0; i < currentSize; i++) {
+            newContents[i] = contents[i];
+        }
+        
+        // Fill new elements
+        for (unsigned long i = currentSize; i < newSize; i++) {
+            newContents[i] = value;
+        }
+        
+        // Update pointers and sizes
+        delete[] contents;
+        contents = newContents;
+        currentCapacity = newSize;
+        currentSize = newSize;
+    }
+}
  
  
  
